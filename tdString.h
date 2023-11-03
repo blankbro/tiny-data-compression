@@ -26,6 +26,7 @@
 #include <string.h>
 #define NDEBUG // disable asserts
 #include <assert.h>
+#include <stdint.h>
 
 #define MAX_UNIQUES_EXTENDED_STRING_MODE 64
 #define MAX_TOTAL_UNIQUES_EXTENDED_STRING_MODE 128
