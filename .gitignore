@@ -1,2 +1,7 @@
 
 ~$ny Data Compression with td512.docx
+
+/.idea
+**/**.td512
+**/**.td512d
+test/td512
