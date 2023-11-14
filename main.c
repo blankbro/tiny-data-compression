@@ -28,6 +28,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <sys/time.h>
 
 #define BENCHMARK_LOOP_COUNT // special loop count for benchmarking
 #define EXTERNAL_LOOP_COUNT_MAX 2000
@@ -164,6 +165,8 @@ COMPRESS_LOOP:
 
     // compress and write result
     begin = clock();
+    struct timeval my_start, my_end;
+    gettimeofday(&my_start, NULL);
     while (internalLoop > 0)
     {
         while (nBytesRemaining > 0)
@@ -186,15 +189,18 @@ COMPRESS_LOOP:
             dstBlockOffset=0;
         }
     }
+    gettimeofday(&my_end, NULL);
+    double my_time_used = (my_end.tv_sec - my_start.tv_sec) * 1000 + (my_end.tv_usec - my_start.tv_usec) / 1000.0;
+    printf("压缩耗时: %f ms\n", my_time_used);
     end = clock();
     timeSpent = (double)(end - begin) / (double)CLOCKS_PER_SEC;
     if (timeSpent < minTimeSpent && timeSpent > 1.e-10)
         minTimeSpent = timeSpent;
-    if (++loopNum < loopCnt)
-    {
-        usleep(10); // sleep 10 us
-        goto COMPRESS_LOOP;
-    }
+    // if (++loopNum < loopCnt)
+    // {
+    //     usleep(10); // sleep 10 us
+    //     goto COMPRESS_LOOP;
+    // }
     timeSpent = minTimeSpent / savedInternalLoopCnt;
     printf("compression=%.02f%%  %.00f bytes per second inbytes=%lu outbytes=%u\n", (float)100*(1.0-((float)totalCompressedBytes/(float)len)), (float)len/(float)timeSpent, len, totalCompressedBytes);
 #ifdef TD512_TEST_MODE
@@ -235,6 +241,7 @@ DECOMPRESS_LOOP:
     srcBlockOffset = 0;
     dstBlockOffset = 0;
     begin = clock();
+    gettimeofday(&my_start, NULL);
     while (internalLoop > 0)
     {
         while (nBytesRemaining > 0)
@@ -257,15 +264,18 @@ DECOMPRESS_LOOP:
             dstBlockOffset = 0;
         }
     }
+    gettimeofday(&my_end, NULL);
+    my_time_used = (my_end.tv_sec - my_start.tv_sec) * 1000 + (my_end.tv_usec - my_start.tv_usec) / 1000.0;
+    printf("解压耗时: %f ms\n", my_time_used);
     end = clock();
     timeSpent = (double)(end - begin) / (double)CLOCKS_PER_SEC;
     if (timeSpent < minTimeSpent && timeSpent > 1.e-10)
         minTimeSpent = timeSpent;
-    if (++loopNum < loopCnt)
-    {
-        usleep(10); // sleep 10 us
-        goto DECOMPRESS_LOOP;
-    }
+    // if (++loopNum < loopCnt)
+    // {
+    //     usleep(10); // sleep 10 us
+    //     goto DECOMPRESS_LOOP;
+    // }
     timeSpent = minTimeSpent / savedInternalLoopCnt;
     printf("decompression=%.00f bytes per second inbytes=%lu outbytes=%u\n", (float)len/(float)timeSpent, len3, totalOutBytes);
     fwrite(dst, len, 1, ofile);

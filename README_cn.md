@@ -57,7 +57,7 @@ gcc main.c td512.c td64.c tdString.c -o test/td512
 5. 运行生成的可执行文件,传入文件名作为参数:
 
 ```
-./test/td512 test/test_file 
+./test/td512 test/binary_test_file_001
 ```
 
 这会在当前目录下生成test_file.td512压缩文件和test_file.td512d解压后的文件。
@@ -65,7 +65,7 @@ gcc main.c td512.c td64.c tdString.c -o test/td512
 6. 也可以传递循环次数参数进行性能测试:
 
 ```
-./test/td512 test/test_file 1000
+./test/td512 test/binary_test_file_001 1000
 ```
 
 7. 查看test_file.td512文件大小对比来判断压缩效果。
