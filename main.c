@@ -203,6 +203,7 @@ COMPRESS_LOOP:
     // }
     timeSpent = minTimeSpent / savedInternalLoopCnt;
     printf("compression=%.02f%%  %.00f bytes per second inbytes=%lu outbytes=%u\n", (float)100*(1.0-((float)totalCompressedBytes/(float)len)), (float)len/(float)timeSpent, len, totalCompressedBytes);
+    printf("compression(encodeBytes/originBytes)=%.02f%%\n", (float) 100 * (float) totalCompressedBytes / (float) len);
 #ifdef TD512_TEST_MODE
     double totalBlocks=gExtendedTextCnt+gExtendedStringCnt+gtd64Cnt;
     printf("TD512_TEST_MODE\n   Extended text mode=%.01f%%   Extended string mode= %.01f%%   td64 =%.01f%%\n", (float)gExtendedTextCnt/totalBlocks*100, (float)gExtendedStringCnt/totalBlocks*100, (float)gtd64Cnt/totalBlocks*100);
